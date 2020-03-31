@@ -5,7 +5,7 @@ from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 
-class City(BaseModel):
+class City(BaseModel, Base):
     """This is the class for City
     Attributes:
         __tablename__ (str): MySQL table name to store Cities.

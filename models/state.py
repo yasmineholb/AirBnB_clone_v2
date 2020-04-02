@@ -17,13 +17,14 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City",  backref="state", cascade="all,delet")
+    cities = relationship("City",  backref="state", cascade="all,delete")
 
-    @property
-    def cities(self):
-        """Get a list of all related City objects."""
-        cities = []
-        for city in list(models.storage.all(City).values()):
-            if city.state_id == self.id:
-                cities.append(city)
-        return cities
+    if getenv("HBNB_TYPE_STORAGE", None) != "db":
+        @property
+        def cities(self):
+            """Get a list of all related City objects."""
+            cities = []
+            for city in list(models.storage.all(City).values()):
+                if city.state_id == self.id:
+                    cities.append(city)
+            return cities

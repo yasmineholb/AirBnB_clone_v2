@@ -47,30 +47,31 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    reviews = relationship("Review", backref="place", cascade="all,delet")
+    reviews = relationship("Review", backref="place", cascade="all,delete")
     amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False)
     amenity_ids = []
 
-    @property
-    def reviews(self):
-        """Get a list of all linked Reviews."""
-        reviews = []
-        for review in list(models.storage.all(Review).values()):
-            if review.place_id == self.id:
-                reviews.append(review)
-        return reviews
+    if getenv("HBNB_TYPE_STORAGE", None) != "db":
+        @property
+        def reviews(self):
+            """Get a list of all linked Reviews."""
+            reviews = []
+            for review in list(models.storage.all(Review).values()):
+                if review.place_id == self.id:
+                    reviews.append(review)
+            return reviews
 
-    @property
-    def amenities(self):
-        """Get/set linked Amenities."""
-        amenities = []
-        for amenity in list(models.storage.all(Amenity).values()):
-            if amenity.id in self.amenity_ids:
-                amenities.append(amenity)
-        return amenities
+        @property
+        def amenities(self):
+            """Get/set linked Amenities."""
+            amenities = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenities.append(amenity)
+            return amenities
 
-    @amenities.setter
-    def amenities(self, value):
-        if type(value) == Amenity:
-            self.amenity_ids.append(value.id)
+        @amenities.setter
+        def amenities(self, value):
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)

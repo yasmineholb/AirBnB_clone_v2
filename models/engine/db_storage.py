@@ -21,7 +21,7 @@ class DBStorage:
     """
     __engine = None
     __session = None
-
+    __mdoels= ["State", "City", "User", "Place", "Review", "Amenity"]
     def __init__(self):
         """
         """
@@ -50,16 +50,13 @@ class DBStorage:
             cls (str) Model instance class name
         """
         if cls is None:
-            objs = self.__session.query(State).all()
-            objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
-            return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
-        if type(cls) == str:
-            cls = eval(cls)
-        objs = self.__session.query(cls)
+            objs = []
+            for obj in self.__mdoels:
+                objs.extend(self.__session.query(eval(obj)).all())
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
         return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
 
     def save(self):
@@ -85,7 +82,6 @@ class DBStorage:
 
         Arguments:
             None
-
         """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,

@@ -51,3 +51,26 @@ class Place(BaseModel, Base):
     amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False)
     amenity_ids = []
+
+    @property
+    def reviews(self):
+        """Get a list of all linked Reviews."""
+        reviews = []
+        for review in list(models.storage.all(Review).values()):
+            if review.place_id == self.id:
+                reviews.append(review)
+        return reviews
+
+    @property
+    def amenities(self):
+        """Get/set linked Amenities."""
+        amenities = []
+        for amenity in list(models.storage.all(Amenity).values()):
+            if amenity.id in self.amenity_ids:
+                amenities.append(amenity)
+        return amenities
+
+    @amenities.setter
+    def amenities(self, value):
+        if type(value) == Amenity:
+            self.amenity_ids.append(value.id)

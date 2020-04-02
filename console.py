@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    all_classes = {"BaseModel", "User", "State", "City",
+    __models = {"BaseModel", "User", "State", "City",
                    "Amenity", "Place", "Review"}
 
     def emptyline(self):
@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            if my_list[0] not in self.all_classes:
+            if my_list[0] not in self.__models:
                 raise NameError()
             if len(my_list) < 2:
                 raise IndexError()
@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            if my_list[0] not in self.all_classes:
+            if my_list[0] not in self.__models:
                 raise NameError()
             if len(my_list) < 2:
                 raise IndexError()
@@ -135,22 +135,18 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
-        my_list = []
         if not line:
-            for key in objects:
-                my_list.append(objects[key])
-            print(my_list)
+            o = storage.all()
+            print([o[k].__str__() for k in o])
             return
         try:
             args = line.split(" ")
-            if args[0] not in self.all_classes:
+            if args[0] not in self.__models:
                 raise NameError()
-            for key in objects:
-                name = key.split('.')
-                if name[0] == args[0]:
-                    my_list.append(objects[key])
-            print(my_list)
+
+            o = storage.all(eval(args[0]))
+            print([o[k].__str__() for k in o])
+
         except NameError:
             print("** class doesn't exist **")
 
@@ -168,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = split(line, " ")
-            if my_list[0] not in self.all_classes:
+            if my_list[0] not in self.__models:
                 raise NameError()
             if len(my_list) < 2:
                 raise IndexError()
@@ -205,7 +201,7 @@ class HBNBCommand(cmd.Cmd):
         counter = 0
         try:
             my_list = split(line, " ")
-            if my_list[0] not in self.all_classes:
+            if my_list[0] not in self.__models:
                 raise NameError()
             objects = storage.all()
             for key in objects:

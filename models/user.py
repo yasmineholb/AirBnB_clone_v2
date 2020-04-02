@@ -9,12 +9,12 @@ class User(BaseModel, Base):
     """This is the class for user
     Attributes:
         __tablename__ (str): MySQL table name to store users.
-        email: (sqlalchemy String): User's email address.
-        password (sqlalchemy String): User's password.
-        first_name (sqlalchemy String): User's first name.
-        last_name (sqlalchemy String): User's last name.
-        places (sqlalchemy relationship): The User-Place relationship.
-        reviews (sqlalchemy relationship): The User-Review relationship.
+        email: (sqlalchemy String): User email address.
+        password (sqlalchemy String): User password.
+        first_name (sqlalchemy String): User first name.
+        last_name (sqlalchemy String): User last name.
+        places (orm relationship): User-Place relationship.
+        reviews (orm relationship): User-Review relationship.
     """
     __tablename__ = "users"
     email = Column(String(128), nullable=False)

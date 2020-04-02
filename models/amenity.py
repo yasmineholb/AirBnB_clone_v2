@@ -9,8 +9,8 @@ class Amenity(BaseModel, Base):
     """This is the class for Amenity
     Attributes:
         __tablename__ (str): MySQL table name to store Amenities.
-        name (sqlalchemy String): amenity name.
-        place_amenities (sqlalchemy relationship): Place-Amenity relationship.
+        name (sqlalchemy String): Amenity name.
+        place_amenities (orm relationship): Place-Amenity relationship.
     """
     __tablename__ = "amenities"
     name = Column(String(128), nullable=False)

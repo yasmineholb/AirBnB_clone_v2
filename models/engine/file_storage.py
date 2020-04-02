@@ -25,7 +25,7 @@ class FileStorage:
         Return:
             returns a dictionary of __object
         """
-        if cls:
+        if cls is not None:
             if type(cls) is str:
                 cls = eval(cls)
             cls_dict = {}
@@ -40,33 +40,35 @@ class FileStorage:
         Args:
             obj: given object
         """
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """serialize the file path to JSON file path
         """
-        my_dict = {}
-        for key, value in self.__objects.items():
-            my_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+        odct = {obj: self.__objects[obj].to_dict()
+                for obj in self.__objects.keys()}
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(odct, f)
 
     def reload(self):
         """serialize the file path to JSON file path
         """
         try:
-            with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                for key, value in (json.load(f)).items():
-                    value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                for v in json.load(f).values():
+                    cls_name = v["__class__"]
+                    del v["__class__"]
+                    self.new(eval(cls_name)(**v))
         except FileNotFoundError:
             pass
-    
+
     def delete(self, obj=None):
         """Delete a object from __objects, if it exists."""
         try:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except (AttributeError, KeyError):
             pass
+
+    def close(self):
+        """Call the reload method."""
+        self.reload()

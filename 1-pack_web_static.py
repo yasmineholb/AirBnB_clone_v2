@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """
-Fabric script 
+Fabric script
 """
 from fabric.api import local
 from datetime import datetime
 import os
+
 
 def do_pack():
     """web_static"""

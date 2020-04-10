@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Fabric script 
+Fabric script
 """
 from fabric.api import env
 from fabric.api import put
@@ -10,6 +10,7 @@ import os
 
 
 env.hosts = ['54.226.69.66', '35.196.219.244']
+
 
 def do_pack():
     """web_static"""

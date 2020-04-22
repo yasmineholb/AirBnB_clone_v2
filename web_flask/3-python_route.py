@@ -23,10 +23,10 @@ def text_var(text):
 
 
 @app.route('/python', strict_slashes=False)
-@app.route('/python/(<text>)', strict_slashes=False)
-def hb_textpy(text="is cool"):
-    """ fn web app """
-    return "Python {}".format(text.replace("_", " "))
+@app.route('/python/<text>', strict_slashes=False)
+def pytext(text='is cool'):
+    """display python"""
+    return 'Python ' + text.replace('_', ' ')
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)

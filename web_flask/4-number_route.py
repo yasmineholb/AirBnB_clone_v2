@@ -29,11 +29,10 @@ def pytext(text='is cool'):
     return 'Python ' + text.replace('_', ' ')
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def hb_numb(n):
-    """ fn web app """
-    if int(n) is True:
-        return "{} is a number".format(n)
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """Display number"""
+    return "{} is a number".format(n)
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)

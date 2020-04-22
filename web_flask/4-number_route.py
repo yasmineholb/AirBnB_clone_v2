@@ -17,16 +17,16 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def hb_text(txt):
-    """ fn web app """
-    return "C {}".format(txt.replace("_", " "))
+def text_var(text):
+    """function txt """
+    return "C {}".format(text.replace("_", " "))
 
 
 @app.route('/python', strict_slashes=False)
-@app.route('/python/(<text>)', strict_slashes=False)
-def hb_textpy(txt="is cool"):
-    """ fn web app """
-    return "Python {}".format(txt.replace("_", " "))
+@app.route('/python/<text>', strict_slashes=False)
+def pytext(text='is cool'):
+    """display python"""
+    return 'Python ' + text.replace('_', ' ')
 
 
 @app.route('/number/<int:n>', strict_slashes=False)

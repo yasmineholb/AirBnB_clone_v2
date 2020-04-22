@@ -17,30 +17,28 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def hb_text(txt):
-    """ fn web app """
-    return "C {}".format(txt.replace("_", " "))
+def text_var(text):
+    """function txt """
+    return "C {}".format(text.replace("_", " "))
 
 
 @app.route('/python', strict_slashes=False)
-@app.route('/python/(<text>)', strict_slashes=False)
-def hb_textpy(txt="is cool"):
-    """ fn web app """
-    return "Python {}".format(txt.replace("_", " "))
+@app.route('/python/<text>', strict_slashes=False)
+def pytext(text='is cool'):
+    """display python"""
+    return 'Python ' + text.replace('_', ' ')
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def hb_numb(n):
-    """ fn web app """
-    if int(n) is True:
-        return "{} is a number".format(n)
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """Display number"""
+    return "{} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def hb_html(n):
     """ fn web app """
-    if int(n) is True:
-        return render_template("5-number.html", n=n)
-    
+    return render_template("5-number.html", n=n)
+
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)

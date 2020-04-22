@@ -8,13 +8,13 @@ app = Flask(__name__)
 
 
 @app.route('/states', strict_slashes=False)
-@app.route("/states/<id>", strict_slashes=False)
-def states_id(id):
-    """Display htm id"""
-    for st in storage.all("State").values():
-        if st.id == id:
-            return render_template("9-states.html", state=st)
-    return render_template("9-states.html")
+@app.route('/states/<state_id>', strict_slashes=False)
+def states(st_id=None):
+    """display id"""
+    st = storage.all("State")
+    if st_id is not None:
+        st_id = 'State.' + st_id
+    return render_template("9-states.html", states=st, state_id=st_id)
 
 
 @app.teardown_appcontext
